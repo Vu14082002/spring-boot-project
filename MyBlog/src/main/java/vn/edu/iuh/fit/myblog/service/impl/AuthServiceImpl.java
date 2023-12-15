@@ -15,6 +15,7 @@ import vn.edu.iuh.fit.myblog.payload.LoginDto;
 import vn.edu.iuh.fit.myblog.payload.RegisterDto;
 import vn.edu.iuh.fit.myblog.repository.RoleRepository;
 import vn.edu.iuh.fit.myblog.repository.UserRepository;
+import vn.edu.iuh.fit.myblog.security.JwtTokenProvider;
 import vn.edu.iuh.fit.myblog.service.AuthService;
 
 import java.util.HashSet;
@@ -27,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String login(LoginDto loginDto) {
@@ -35,7 +37,8 @@ public class AuthServiceImpl implements AuthService {
                 loginDto.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        return "Login success";
+        String token = jwtTokenProvider.generateToken(authenticate);
+        return token;
     }
 
     @Override
