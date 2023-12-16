@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "posts",uniqueConstraints = {@UniqueConstraint(columnNames = "title")})
+@Table(name = "posts", uniqueConstraints = {@UniqueConstraint(columnNames = "title")})
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,10 @@ public class Post {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
